@@ -1,7 +1,9 @@
 import {myContainer} from '../inversify.config';
 import {TYPES} from '../types/types';
 import {Client, Manager, Todo} from '../interfaces/interfaces';
-import { TodoClient } from '../entities';
+import { TodoClient } from '../todoClient';
+import { ApiManager } from '../apiManager';
+
 
 const apiManager = myContainer.get<Manager>(TYPES.Manager);
 
@@ -29,13 +31,11 @@ describe('Client', () =>{
        expect(success).toStrictEqual([{"completed":false, "id": 1, "title": "delectus aut autem", "userId": 1}]);
    })
 
-   it("mocking the client", () =>{
-    jest.mock('../entities/ToDoClient')
 
-    test('testing',()=>{
-        const toClient = new TodoClient();
-        toClient.getInfo(1);
-        expect(toClient.getInfo(1)).toHaveBeenCalled();
+    test('Testing Api Manager class',()=>{
+        jest.mock('../apiManager');
+        
+        expect(apiManager).toStrictEqual(new ApiManager(new TodoClient()));
+
     })
-   });
 })

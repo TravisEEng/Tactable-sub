@@ -48,25 +48,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApiManager = exports.TodoClient = void 0;
+exports.ApiManager = void 0;
 var inversify_1 = require("inversify");
 require("reflect-metadata");
 var types_1 = require("./types/types");
-var fetch = require('node-fetch');
+var todoClient_1 = require("./todoClient");
 var ApiManager = /** @class */ (function () {
     function ApiManager(todoClient) {
         this._todoClient = todoClient;
     }
     ApiManager.prototype.fetchData = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var promiseWithData;
-            var _this = this;
             return __generator(this, function (_a) {
-                promiseWithData = function () {
-                    _this._todoClient.getInfo(id).then(function (result) {
-                        return result;
-                    });
-                };
                 return [2 /*return*/, this._todoClient.getInfo(id)];
             });
         });
@@ -74,35 +67,8 @@ var ApiManager = /** @class */ (function () {
     ApiManager = __decorate([
         inversify_1.injectable(),
         __param(0, inversify_1.inject(types_1.TYPES.TodoClient)),
-        __metadata("design:paramtypes", [TodoClient])
+        __metadata("design:paramtypes", [todoClient_1.TodoClient])
     ], ApiManager);
     return ApiManager;
 }());
 exports.ApiManager = ApiManager;
-var TodoClient = /** @class */ (function () {
-    function TodoClient() {
-    }
-    TodoClient.prototype.getInfo = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                try {
-                    return [2 /*return*/, fetch("https://jsonplaceholder.typicode.com/todos/?id=" + id)
-                            .then(function (res) { return res.json(); })
-                            .then(function (res) { return res.map(function (todo) { return formatTodo(todo); }); })];
-                }
-                catch (error) {
-                    throw new (error);
-                }
-                return [2 /*return*/];
-            });
-        });
-    };
-    TodoClient = __decorate([
-        inversify_1.injectable()
-    ], TodoClient);
-    return TodoClient;
-}());
-exports.TodoClient = TodoClient;
-function formatTodo(todo) {
-    return { userId: todo.userId, id: todo.id, title: todo.title, completed: todo.completed };
-}

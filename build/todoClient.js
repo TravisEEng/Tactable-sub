@@ -1,4 +1,10 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -36,39 +42,34 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var inversify_config_1 = require("../inversify.config");
-var types_1 = require("../types/types");
-var todoClient_1 = require("../todoClient");
-var apiManager_1 = require("../apiManager");
-var apiManager = inversify_config_1.myContainer.get(types_1.TYPES.Manager);
-test("Should return the results from querying todo with ID 1", function () {
-    var finalValue = [{ "completed": false, "id": 1, "title": "delectus aut autem", "userId": 1 }]; //new  = '[{"completed": false, "id": 1, "title": delectus aut autem, "userId": 1}]';
-    return apiManager.fetchData(1).then(function (data) {
-        expect(data).toStrictEqual(finalValue);
-    });
-});
-describe('Client', function () {
-    var mockClient;
-    var success = [];
-    beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    mockClient = new todoClient_1.TodoClient();
-                    inversify_config_1.myContainer.rebind(types_1.TYPES.TodoClient).toConstantValue(new todoClient_1.TodoClient());
-                    return [4 /*yield*/, mockClient.getInfo(1)];
-                case 1:
-                    success = _a.sent();
-                    return [2 /*return*/];
-            }
+exports.TodoClient = void 0;
+var inversify_1 = require("inversify");
+require("reflect-metadata");
+var fetch = require('node-fetch');
+var TodoClient = /** @class */ (function () {
+    function TodoClient() {
+    }
+    TodoClient.prototype.getInfo = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                try {
+                    return [2 /*return*/, fetch("https://jsonplaceholder.typicode.com/todos/?id=" + id)
+                            .then(function (res) { return res.json(); })
+                            .then(function (res) { return res.map(function (todo) { return formatTodo(todo); }); })];
+                }
+                catch (error) {
+                    throw new (error);
+                }
+                return [2 /*return*/];
+            });
         });
-    }); });
-    it('get the correct todo information', function () {
-        expect(success).toStrictEqual([{ "completed": false, "id": 1, "title": "delectus aut autem", "userId": 1 }]);
-    });
-    test('testing', function () {
-        jest.mock('../apiManager');
-        apiManager.fetchData(1);
-        expect(apiManager).toStrictEqual(new apiManager_1.ApiManager(new todoClient_1.TodoClient()));
-    });
-});
+    };
+    TodoClient = __decorate([
+        inversify_1.injectable()
+    ], TodoClient);
+    return TodoClient;
+}());
+exports.TodoClient = TodoClient;
+function formatTodo(todo) {
+    return { userId: todo.userId, id: todo.id, title: todo.title, completed: todo.completed };
+}
