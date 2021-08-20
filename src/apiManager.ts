@@ -1,7 +1,7 @@
 import {injectable, inject} from 'inversify';
 import "reflect-metadata";
-import {Manager, Todo, Client} from './interfaces/interfaces';
-import {TYPES} from './types/types';
+import {Manager, Todo, Client} from './interfaces';
+import {TYPES} from './types';
 import {TodoClient} from './todoClient';
 
 

@@ -51,7 +51,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApiManager = void 0;
 var inversify_1 = require("inversify");
 require("reflect-metadata");
-var types_1 = require("./types/types");
+var types_1 = require("./types");
 var todoClient_1 = require("./todoClient");
 var ApiManager = /** @class */ (function () {
     function ApiManager(todoClient) {

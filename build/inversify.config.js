@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.myContainer = void 0;
 var inversify_1 = require("inversify");
-var types_1 = require("./types/types");
+var types_1 = require("./types");
 var apiManager_1 = require("./apiManager");
 var todoClient_1 = require("./todoClient");
 var myContainer = new inversify_1.Container();

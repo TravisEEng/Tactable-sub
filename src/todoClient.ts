@@ -1,6 +1,6 @@
 import {injectable} from 'inversify';
 import "reflect-metadata";
-import {Todo, Client} from './interfaces/interfaces';
+import {Todo, Client} from './interfaces';
 
 const fetch = require('node-fetch');
 

@@ -37,13 +37,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var inversify_config_1 = require("../inversify.config");
-var types_1 = require("../types/types");
+var types_1 = require("../types");
 var todoClient_1 = require("../todoClient");
 var apiManager_1 = require("../apiManager");
 var apiManager = inversify_config_1.myContainer.get(types_1.TYPES.Manager);
 test("Should return the results from querying todo with ID 1", function () {
     var finalValue = [{ "completed": false, "id": 1, "title": "delectus aut autem", "userId": 1 }]; //new  = '[{"completed": false, "id": 1, "title": delectus aut autem, "userId": 1}]';
     return apiManager.fetchData(1).then(function (data) {
+        expect(data).toStrictEqual(finalValue);
+    });
+});
+test("Should return the results from querying todo with ID 1", function () {
+    var finalValue = [{ "completed": false, "id": 1, "title": "delectus aut autem", "userId": 1 }]; //new  = '[{"completed": false, "id": 1, "title": delectus aut autem, "userId": 1}]';
+    return apiManager.fetchData(-1).then(function (data) {
         expect(data).toStrictEqual(finalValue);
     });
 });
@@ -66,9 +72,17 @@ describe('Client', function () {
     it('get the correct todo information', function () {
         expect(success).toStrictEqual([{ "completed": false, "id": 1, "title": "delectus aut autem", "userId": 1 }]);
     });
-    test('testing', function () {
+    test('Testing Api Manager class', function () {
         jest.mock('../apiManager');
-        apiManager.fetchData(1);
         expect(apiManager).toStrictEqual(new apiManager_1.ApiManager(new todoClient_1.TodoClient()));
+    });
+    jest.mock('../apiManager', function () {
+        return {
+            ApiManager: jest.fn().mockImplementation(function () {
+                return {
+                    fetchData: function () { },
+                };
+            })
+        };
     });
 });

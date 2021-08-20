@@ -1,6 +1,6 @@
 import {Container} from 'inversify';
-import {TYPES} from './types/types';
-import {Manager, Client, Todo} from './interfaces/interfaces';
+import {TYPES} from './types';
+import {Manager, Client, Todo} from './interfaces';
 import {ApiManager} from './apiManager';
 import {TodoClient} from './todoClient';
 

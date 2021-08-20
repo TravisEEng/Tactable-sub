@@ -22,6 +22,7 @@
     "@types/jest": "^27.0.1",
     "@types/node": "^16.6.2",
     "jest": "^27.0.6",
+    "jest-create-mock-instance": "^1.1.0",
     "nodemon": "^2.0.12",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.5",

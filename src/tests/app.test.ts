@@ -1,8 +1,9 @@
 import {myContainer} from '../inversify.config';
-import {TYPES} from '../types/types';
-import {Client, Manager, Todo} from '../interfaces/interfaces';
+import {TYPES} from '../types';
+import {Client, Manager, Todo} from '../interfaces';
 import { TodoClient } from '../todoClient';
 import { ApiManager } from '../apiManager';
+import { mocked } from 'ts-jest/utils';
 
 
 const apiManager = myContainer.get<Manager>(TYPES.Manager);
@@ -13,6 +14,13 @@ test("Should return the results from querying todo with ID 1", () => {
 
     return apiManager.fetchData(1).then((data : string)=> {
       expect(data).toStrictEqual(finalValue);
+    });
+  });
+
+  test("Should return blank or empty as theres no such todo", () => {
+
+    return apiManager.fetchData(-1).then((data : string)=> {
+      expect(data).toStrictEqual([]);
     });
   });
 
@@ -37,5 +45,17 @@ describe('Client', () =>{
         
         expect(apiManager).toStrictEqual(new ApiManager(new TodoClient()));
 
-    })
+    });
+
+    jest.mock('../apiManager', () =>{
+      return{
+        ApiManager: jest.fn().mockImplementation(() => {
+          return{
+            fetchData: () => {},
+          };
+        })
+      };
+    });
+    
+
 })
